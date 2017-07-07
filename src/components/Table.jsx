@@ -1,15 +1,13 @@
 // Required libraries
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'react-bootstrap'
-
 
 // ------------- Component
 const Table = (props) => {
-    const columns = props.columns;
-    const rows = props.rows;
-    const tableName = props.tableName;
-
+    const columns = props.columns
+    const rows = props.rows
+    const tableName = props.tableName
+   console.log(rows)
  return (
         <div className="row">
 

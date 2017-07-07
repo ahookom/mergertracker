@@ -23321,8 +23321,8 @@ var ContactForm = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ContactForm.__proto__ || Object.getPrototypeOf(ContactForm)).call(this));
 
     var oldContactInfo = {
-      name: '',
       targetId: props.currentTargetId,
+      name: '',
       email: '',
       phone: '',
       primary: 'no'
@@ -24056,16 +24056,15 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(43);
 
-var _reactBootstrap = __webpack_require__(124);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // ------------- Component
+// Required libraries
 var Table = function Table(props) {
     var columns = props.columns;
     var rows = props.rows;
     var tableName = props.tableName;
-
+    console.log(rows);
     return _react2.default.createElement(
         'div',
         { className: 'row' },
@@ -24133,7 +24132,6 @@ var Table = function Table(props) {
 };
 
 // ------------- Container
-// Required libraries
 var mapStateToProps = null;
 var mapDispatchToProps = null;
 

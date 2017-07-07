@@ -18,8 +18,8 @@ class ContactForm extends React.Component{
   constructor(props){
     super()
     let oldContactInfo = {
-      name: '',
       targetId: props.currentTargetId,
+      name: '',
       email: '',
       phone: '',
       primary: 'no',
