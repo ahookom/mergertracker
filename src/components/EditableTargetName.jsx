@@ -25,10 +25,11 @@ class EditableTargetName extends React.Component{
       <div className="col-lg-12">
         {this.state.showNameEditor ?
           <NameEditor handleEditClick = {this.handleEditClick} /> :
-          <h1 className="page-header">{this.props.currentTargetName}
+          <span>
+            <h1 className="page-header">{this.props.currentTargetName}
             <i onClick={this.handleEditClick} className='fa fa-edit fa-fw'></i>
-            <i onClick={this.handleDeleteClick} className='fa fa-trash-o fa-fw'></i>
-          </h1>
+            <i onClick={this.handleDeleteClick} className='fa fa-trash-o fa-fw'></i></h1>
+          </span>
         }
       </div>
     )

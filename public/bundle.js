@@ -22455,7 +22455,7 @@ var ContactsContainer = function (_React$Component) {
       var columnNames = currContacts.length ? Object.keys(currContacts[0]) : [];
       return _react2.default.createElement(
         'div',
-        { className: 'col-md-9 col-sm-12 col-lg-6' },
+        { className: 'col-md-9 col-sm-12 col-lg-6', style: { marginBottom: '75px' } },
         currContacts.length ? _react2.default.createElement(_Table2.default, {
           rows: currContacts,
           columns: columnNames,
@@ -22565,11 +22565,15 @@ var EditableTargetName = function (_React$Component) {
         'div',
         { className: 'col-lg-12' },
         this.state.showNameEditor ? _react2.default.createElement(_NameEditor2.default, { handleEditClick: this.handleEditClick }) : _react2.default.createElement(
-          'h1',
-          { className: 'page-header' },
-          this.props.currentTargetName,
-          _react2.default.createElement('i', { onClick: this.handleEditClick, className: 'fa fa-edit fa-fw' }),
-          _react2.default.createElement('i', { onClick: this.handleDeleteClick, className: 'fa fa-trash-o fa-fw' })
+          'span',
+          null,
+          _react2.default.createElement(
+            'h1',
+            { className: 'page-header' },
+            this.props.currentTargetName,
+            _react2.default.createElement('i', { onClick: this.handleEditClick, className: 'fa fa-edit fa-fw' }),
+            _react2.default.createElement('i', { onClick: this.handleDeleteClick, className: 'fa fa-trash-o fa-fw' })
+          )
         )
       );
     }
@@ -22722,7 +22726,7 @@ var FinancialsTable = function (_React$Component) {
       var currInfo = this.props.currentTargetFinancials;
       return _react2.default.createElement(
         'div',
-        { className: 'col-md-9 col-sm-12 col-lg-6' },
+        { className: 'col-md-9 col-sm-12 col-lg-6', style: { marginBottom: '75px' } },
         currInfo.length ? _react2.default.createElement(_Table2.default, {
           rows: currInfo,
           tableName: 'Financials Information',
@@ -49950,6 +49954,15 @@ var setCurrTargetId = function setCurrTargetId(props) {
       { path: '/', component: _App2.default },
       _react2.default.createElement(_reactRouter.Route, { path: 'home', component: _HomeView2.default }),
       _react2.default.createElement(_reactRouter.Route, { path: 'target/:id', component: _TargetView2.default, onEnter: setCurrTargetId }),
+      _react2.default.createElement(_reactRouter.Route, { path: 'targets', component: _HomeView2.default }),
+      _react2.default.createElement(_reactRouter.IndexRedirect, { to: 'home' })
+    ),
+    _react2.default.createElement(
+      _reactRouter.Route,
+      { path: '/mergertracker', component: _App2.default },
+      _react2.default.createElement(_reactRouter.Route, { path: 'home', component: _HomeView2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: 'target/:id', component: _TargetView2.default, onEnter: setCurrTargetId }),
+      _react2.default.createElement(_reactRouter.Route, { path: 'targets', component: _HomeView2.default }),
       _react2.default.createElement(_reactRouter.IndexRedirect, { to: 'home' })
     ),
     _react2.default.createElement(_reactRouter.Route, { path: '/*', component: _NotFound2.default })

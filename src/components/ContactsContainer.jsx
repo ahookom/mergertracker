@@ -39,7 +39,7 @@ class ContactsContainer extends React.Component{
     let currContacts = this.props.contacts.filter(contact => +contact.targetId === +this.props.currentTargetId)
     let columnNames = currContacts.length ? Object.keys(currContacts[0]) : []
     return (
-      <div className="col-md-9 col-sm-12 col-lg-6">
+      <div className="col-md-9 col-sm-12 col-lg-6" style={{marginBottom: '75px'}}>
         {currContacts.length ?
           <Table
             rows = {currContacts}

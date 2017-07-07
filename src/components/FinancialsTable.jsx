@@ -40,7 +40,7 @@ class FinancialsTable extends React.Component{
   render(){
     let currInfo = this.props.currentTargetFinancials
     return (
-      <div className="col-md-9 col-sm-12 col-lg-6">
+      <div className="col-md-9 col-sm-12 col-lg-6" style={{marginBottom: '75px'}}>
         {currInfo.length ?
           <Table
             rows = {currInfo}
