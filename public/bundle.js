@@ -23208,7 +23208,7 @@ var TargetView = function TargetView(props) {
     _react2.default.createElement(
       'div',
       { className: 'row' },
-      _react2.default.createElement(_EditableTargetName2.default, { currentTargetName: currentTarget.name }),
+      _react2.default.createElement(_EditableTargetName2.default, { currentTargetName: currentTarget.name, currentTargetId: currentTarget.id }),
       _react2.default.createElement(_StatusIndicator2.default, { status: currentTarget.status })
     ),
     _react2.default.createElement(_FinancialContainer2.default, null),
@@ -23457,6 +23457,8 @@ var _ContactForm = __webpack_require__(252);
 
 var _ContactForm2 = _interopRequireDefault(_ContactForm);
 
+var _contactsReducer = __webpack_require__(149);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -23479,6 +23481,7 @@ var ContactsContainer = function (_React$Component) {
     };
     _this.addContactHandler = _this.addContactHandler.bind(_this);
     _this.editButtonHandler = _this.editButtonHandler.bind(_this);
+    _this.deleteButtonHandler = _this.deleteButtonHandler.bind(_this);
     _this.toggleContactForm = _this.toggleContactForm.bind(_this);
     return _this;
   }
@@ -23493,6 +23496,11 @@ var ContactsContainer = function (_React$Component) {
     key: 'editButtonHandler',
     value: function editButtonHandler(id) {
       this.setState({ showContactForm: true, activelyEditingContactId: id });
+    }
+  }, {
+    key: 'deleteButtonHandler',
+    value: function deleteButtonHandler(id) {
+      this.props.deleteContact(id);
     }
   }, {
     key: 'toggleContactForm',
@@ -23515,7 +23523,8 @@ var ContactsContainer = function (_React$Component) {
           rows: currContacts,
           columns: columnNames,
           tableName: 'Contact Information',
-          editButtonHandler: this.editButtonHandler
+          editButtonHandler: this.editButtonHandler,
+          deleteButtonHandler: this.deleteButtonHandler
         }) : _react2.default.createElement(
           'h3',
           null,
@@ -23540,7 +23549,13 @@ var mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-var mapDispatchToProps = null;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    deleteContact: function deleteContact(contactId) {
+      return dispatch((0, _contactsReducer.deleteContact)(contactId));
+    }
+  };
+};
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ContactsContainer);
 
@@ -24105,7 +24120,7 @@ var Table = function Table(props) {
                                             if (row.id) props.editButtonHandler(row.id);else props.editButtonHandler(index);
                                         }, className: 'fa fa-edit fa-fw' }),
                                     _react2.default.createElement('i', { onClick: function onClick() {
-                                            return props.deleteButtonHandler(row.id);
+                                            if (row.id) props.deleteButtonHandler(row.id);else props.deleteButtonHandler(index);
                                         }, className: 'fa fa-trash-o fa-fw' })
                                 )
                             );
@@ -50798,6 +50813,12 @@ var _NameEditor = __webpack_require__(551);
 
 var _NameEditor2 = _interopRequireDefault(_NameEditor);
 
+var _reactRedux = __webpack_require__(43);
+
+var _targetsReducer = __webpack_require__(93);
+
+var _reactRouter = __webpack_require__(44);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -50818,6 +50839,7 @@ var EditableTargetName = function (_React$Component) {
       showNameEditor: false
     };
     _this.handleEditClick = _this.handleEditClick.bind(_this);
+    _this.handleDeleteClick = _this.handleDeleteClick.bind(_this);
     return _this;
   }
 
@@ -50825,6 +50847,12 @@ var EditableTargetName = function (_React$Component) {
     key: 'handleEditClick',
     value: function handleEditClick() {
       this.setState({ showNameEditor: !this.state.showNameEditor });
+    }
+  }, {
+    key: 'handleDeleteClick',
+    value: function handleDeleteClick() {
+      this.props.deleteTarget(this.props.currentTargetId);
+      _reactRouter.browserHistory.push('/home');
     }
   }, {
     key: 'render',
@@ -50836,7 +50864,8 @@ var EditableTargetName = function (_React$Component) {
           'h1',
           { className: 'page-header' },
           this.props.currentTargetName,
-          _react2.default.createElement('i', { onClick: this.handleEditClick, className: 'fa fa-edit fa-fw' })
+          _react2.default.createElement('i', { onClick: this.handleEditClick, className: 'fa fa-edit fa-fw' }),
+          _react2.default.createElement('i', { onClick: this.handleDeleteClick, className: 'fa fa-trash-o fa-fw' })
         )
       );
     }
@@ -50845,7 +50874,16 @@ var EditableTargetName = function (_React$Component) {
   return EditableTargetName;
 }(_react2.default.Component);
 
-exports.default = EditableTargetName;
+var mapStateToProps = null;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    deleteTarget: function deleteTarget(id) {
+      return dispatch((0, _targetsReducer.deleteTarget)(id));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(EditableTargetName);
 
 /***/ }),
 /* 551 */
@@ -50978,6 +51016,8 @@ var _FinancialsForm = __webpack_require__(553);
 
 var _FinancialsForm2 = _interopRequireDefault(_FinancialsForm);
 
+var _targetsReducer = __webpack_require__(93);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51001,6 +51041,7 @@ var FinancialsTable = function (_React$Component) {
     _this.addInfoHandler = _this.addInfoHandler.bind(_this);
     _this.editButtonHandler = _this.editButtonHandler.bind(_this);
     _this.toggleFinancialsForm = _this.toggleFinancialsForm.bind(_this);
+    _this.deleteButtonHandler = _this.deleteButtonHandler.bind(_this);
     return _this;
   }
 
@@ -51014,6 +51055,15 @@ var FinancialsTable = function (_React$Component) {
     key: 'editButtonHandler',
     value: function editButtonHandler(index) {
       this.setState({ showFinancialsForm: true, activelyEditingFinancialsIndex: index });
+    }
+  }, {
+    key: 'deleteButtonHandler',
+    value: function deleteButtonHandler(delIndex) {
+      var updatedFinancials = this.props.currentTargetFinancials.filter(function (metricArr, index) {
+        return +index !== +delIndex;
+      });
+      var updatedTarget = { id: this.props.currentTargetId, financials: updatedFinancials };
+      this.props.updateTarget(updatedTarget);
     }
   }, {
     key: 'toggleFinancialsForm',
@@ -51030,7 +51080,8 @@ var FinancialsTable = function (_React$Component) {
         currInfo.length ? _react2.default.createElement(_Table2.default, {
           rows: currInfo,
           tableName: 'Financials Information',
-          editButtonHandler: this.editButtonHandler
+          editButtonHandler: this.editButtonHandler,
+          deleteButtonHandler: this.deleteButtonHandler
         }) : _react2.default.createElement(
           'h3',
           null,
@@ -51052,13 +51103,19 @@ var mapStateToProps = function mapStateToProps(state) {
   var currentTarget = state.targets.allTargets.filter(function (target) {
     return +target.id === +state.targets.currentTargetId;
   })[0];
-  console.log(currentTarget);
   return {
-    currentTargetFinancials: currentTarget.financials
+    currentTargetFinancials: currentTarget.financials,
+    currentTargetId: state.targets.currentTargetId
   };
 };
 
-var mapDispatchToProps = null;
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    updateTarget: function updateTarget(newTarget) {
+      return dispatch((0, _targetsReducer.updateTarget)(newTarget));
+    }
+  };
+};
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FinancialsTable);
 

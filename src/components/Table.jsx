@@ -33,7 +33,10 @@ const Table = (props) => {
                                 if(row.id)props.editButtonHandler(row.id)
                                 else props.editButtonHandler(index)
                              }} className='fa fa-edit fa-fw'></i>
-                            <i onClick={() => props.deleteButtonHandler(row.id)} className='fa fa-trash-o fa-fw'></i>
+                            <i onClick={() => {
+                                if(row.id)props.deleteButtonHandler(row.id)
+                                else props.deleteButtonHandler(index)
+                            }} className='fa fa-trash-o fa-fw'></i>
                             </td>
                         </tr>)
                     }

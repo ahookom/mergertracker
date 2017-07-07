@@ -11,7 +11,7 @@ const TargetView = props => {
   return (
     <div id="page-wrapper">
       <div className="row">
-        <EditableTargetName currentTargetName ={currentTarget.name} />
+        <EditableTargetName currentTargetName ={currentTarget.name} currentTargetId={currentTarget.id} />
         <StatusIndicator status={currentTarget.status} />
       </div>
       <FinancialContainer />

@@ -3,6 +3,7 @@ import Table from './Table.jsx'
 import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import FinancialsForm from './FinancialsForm.jsx'
+import { updateTarget } from '../reducers/targetsReducer.js'
 
 class FinancialsTable extends React.Component{
   constructor(){
@@ -14,6 +15,7 @@ class FinancialsTable extends React.Component{
     this.addInfoHandler = this.addInfoHandler.bind(this)
     this.editButtonHandler = this.editButtonHandler.bind(this)
     this.toggleFinancialsForm = this.toggleFinancialsForm.bind(this)
+    this.deleteButtonHandler = this.deleteButtonHandler.bind(this)
   }
 
   addInfoHandler(e){
@@ -23,6 +25,12 @@ class FinancialsTable extends React.Component{
 
   editButtonHandler(index){
     this.setState({showFinancialsForm: true, activelyEditingFinancialsIndex: index})
+  }
+
+  deleteButtonHandler(delIndex){
+    let updatedFinancials = this.props.currentTargetFinancials.filter((metricArr,index) => +index !== +delIndex)
+    let updatedTarget = {id: this.props.currentTargetId, financials: updatedFinancials}
+    this.props.updateTarget(updatedTarget)
   }
 
   toggleFinancialsForm(){
@@ -38,6 +46,7 @@ class FinancialsTable extends React.Component{
             rows = {currInfo}
             tableName = "Financials Information"
             editButtonHandler = {this.editButtonHandler}
+            deleteButtonHandler = {this.deleteButtonHandler}
           /> :
           <h3>No Financials Added</h3>
         }
@@ -52,12 +61,16 @@ class FinancialsTable extends React.Component{
 
 let mapStateToProps = state => {
   let currentTarget = state.targets.allTargets.filter(target => +target.id === +state.targets.currentTargetId)[0]
-  console.log(currentTarget)
   return {
-    currentTargetFinancials: currentTarget.financials
+    currentTargetFinancials: currentTarget.financials,
+    currentTargetId: state.targets.currentTargetId
   }
 }
 
-let mapDispatchToProps = null
+let mapDispatchToProps = dispatch => {
+  return {
+    updateTarget: (newTarget) => dispatch(updateTarget(newTarget))
+  }
+}
 
 export default connect(mapStateToProps,mapDispatchToProps)(FinancialsTable)

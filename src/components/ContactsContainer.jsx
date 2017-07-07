@@ -3,6 +3,7 @@ import Table from './Table.jsx'
 import { connect } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import ContactForm from './ContactForm.jsx'
+import { deleteContact } from '../reducers/contactsReducer'
 
 class ContactsContainer extends React.Component{
   constructor(){
@@ -13,6 +14,7 @@ class ContactsContainer extends React.Component{
     }
     this.addContactHandler = this.addContactHandler.bind(this)
     this.editButtonHandler = this.editButtonHandler.bind(this)
+    this.deleteButtonHandler = this.deleteButtonHandler.bind(this)
     this.toggleContactForm = this.toggleContactForm.bind(this)
   }
 
@@ -23,6 +25,10 @@ class ContactsContainer extends React.Component{
 
   editButtonHandler(id){
     this.setState({showContactForm: true, activelyEditingContactId: id})
+  }
+
+  deleteButtonHandler(id){
+    this.props.deleteContact(id)
   }
 
   toggleContactForm(){
@@ -40,6 +46,7 @@ class ContactsContainer extends React.Component{
             columns = {columnNames}
             tableName = "Contact Information"
             editButtonHandler = {this.editButtonHandler}
+            deleteButtonHandler = {this.deleteButtonHandler}
           /> :
           <h3>No Contacts Added</h3>
         }
@@ -59,6 +66,10 @@ let mapStateToProps = state => {
   }
 }
 
-let mapDispatchToProps = null
+let mapDispatchToProps = dispatch => {
+  return {
+    deleteContact: contactId => dispatch(deleteContact(contactId))
+  }
+}
 
 export default connect(mapStateToProps,mapDispatchToProps)(ContactsContainer)
