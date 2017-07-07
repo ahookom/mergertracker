@@ -9,7 +9,7 @@ class FinancialsTable extends React.Component{
     super()
     this.state = {
       showFinancialsForm: false,
-      activelyEditingFinancialsIndex: 0
+      activelyEditingFinancialsIndex: false
     }
     this.addInfoHandler = this.addInfoHandler.bind(this)
     this.editButtonHandler = this.editButtonHandler.bind(this)
@@ -26,7 +26,7 @@ class FinancialsTable extends React.Component{
   }
 
   toggleFinancialsForm(){
-    this.setState({showFinancialsForm: !this.state.showFinancialsForm})
+    this.setState({showFinancialsForm: !this.state.showFinancialsForm, activelyEditingFinancialsIndex: false})
   }
 
   render(){
@@ -51,7 +51,8 @@ class FinancialsTable extends React.Component{
 }
 
 let mapStateToProps = state => {
-  let currentTarget = state.targets.allTargets.filter(target=>+target.id===+state.targets.currentTargetId)[0]
+  let currentTarget = state.targets.allTargets.filter(target => +target.id === +state.targets.currentTargetId)[0]
+  console.log(currentTarget)
   return {
     currentTargetFinancials: currentTarget.financials
   }

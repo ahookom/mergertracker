@@ -24101,13 +24101,12 @@ var Table = function Table(props) {
                                 _react2.default.createElement(
                                     'td',
                                     { key: Object.keys(row).length },
-                                    _react2.default.createElement(
-                                        _reactBootstrap.Button,
-                                        { onClick: function onClick() {
-                                                return props.editButtonHandler(row.id);
-                                            } },
-                                        'Edit'
-                                    )
+                                    _react2.default.createElement('i', { onClick: function onClick() {
+                                            if (row.id) props.editButtonHandler(row.id);else props.editButtonHandler(index);
+                                        }, className: 'fa fa-edit fa-fw' }),
+                                    _react2.default.createElement('i', { onClick: function onClick() {
+                                            return props.deleteButtonHandler(row.id);
+                                        }, className: 'fa fa-trash-o fa-fw' })
                                 )
                             );
                         })
@@ -50997,7 +50996,7 @@ var FinancialsTable = function (_React$Component) {
 
     _this.state = {
       showFinancialsForm: false,
-      activelyEditingFinancialsIndex: 0
+      activelyEditingFinancialsIndex: false
     };
     _this.addInfoHandler = _this.addInfoHandler.bind(_this);
     _this.editButtonHandler = _this.editButtonHandler.bind(_this);
@@ -51019,7 +51018,7 @@ var FinancialsTable = function (_React$Component) {
   }, {
     key: 'toggleFinancialsForm',
     value: function toggleFinancialsForm() {
-      this.setState({ showFinancialsForm: !this.state.showFinancialsForm });
+      this.setState({ showFinancialsForm: !this.state.showFinancialsForm, activelyEditingFinancialsIndex: false });
     }
   }, {
     key: 'render',
@@ -51053,6 +51052,7 @@ var mapStateToProps = function mapStateToProps(state) {
   var currentTarget = state.targets.allTargets.filter(function (target) {
     return +target.id === +state.targets.currentTargetId;
   })[0];
+  console.log(currentTarget);
   return {
     currentTargetFinancials: currentTarget.financials
   };
@@ -51081,7 +51081,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(43);
 
-var _contactsReducer = __webpack_require__(149);
+var _targetsReducer = __webpack_require__(93);
 
 var _reactBootstrap = __webpack_require__(124);
 
@@ -51128,19 +51128,17 @@ var FinancialsForm = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (FinancialsForm.__proto__ || Object.getPrototypeOf(FinancialsForm)).call(this));
 
-    var oldContactInfo = {
-      name: '',
-      targetId: props.currentTargetId,
-      email: '',
-      phone: '',
-      primary: 'no'
+    var oldValues = {
+      metric: '',
+      value: ''
     };
-    if (props.contactId) {
-      oldContactInfo = props.contacts.filter(function (contact) {
-        return contact.id === props.contactId;
-      })[0];
+    if (props.index !== false) {
+      console.log('in conditional', props.index);
+      var metricArr = props.currentTargetFinancials[props.index];
+      oldValues.metric = metricArr[0];
+      oldValues.value = metricArr[1];
     }
-    _this.state = Object.assign({}, oldContactInfo);
+    _this.state = oldValues;
     _this.handleSubmit = _this.handleSubmit.bind(_this);
     _this.handleInputChange = _this.handleInputChange.bind(_this);
     return _this;
@@ -51150,18 +51148,21 @@ var FinancialsForm = function (_React$Component) {
     key: 'handleSubmit',
     value: function handleSubmit(event) {
       event.preventDefault();
-      if (this.props.contactId) {
-        this.props.updateContact(this.state);
+      var newFinancials = this.props.currentTargetFinancials;
+      var newInfoArr = [this.state.metric, this.state.value];
+      if (this.props.index !== false) {
+        newFinancials[this.props.index] = newInfoArr;
       } else {
-        this.props.addContact(this.state);
+        newFinancials.push(newInfoArr);
       }
+      this.props.updateTarget({ id: this.props.currentTargetId, financials: newFinancials });
       this.props.submitCallback();
     }
   }, {
     key: 'handleInputChange',
     value: function handleInputChange(event) {
       var target = event.target;
-      var value = target.type === 'checkbox' ? target.checked : target.value;
+      var value = target.value;
       var name = target.name;
       this.setState(_defineProperty({}, name, value));
     }
@@ -51170,39 +51171,26 @@ var FinancialsForm = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'container col-lg-8 col-md-10 col-sm-12', style: { marginBottom: 20 } },
         _react2.default.createElement(
           'form',
           { onSubmit: this.handleSubmit },
           _react2.default.createElement(FieldGroup, {
             id: 'formControlsName',
             type: 'text',
-            label: 'Name',
-            name: 'name',
-            placeholder: this.state.name,
+            label: 'Metric',
+            name: 'metric',
+            placeholder: this.state.metric,
             onChange: this.handleInputChange
           }),
           _react2.default.createElement(FieldGroup, {
-            id: 'formControlsText',
+            id: 'formControls',
             type: 'text',
-            label: 'Email address',
-            name: 'email',
-            placeholder: this.state.email,
+            label: 'Value',
+            name: 'value',
+            placeholder: this.state.value,
             onChange: this.handleInputChange
           }),
-          _react2.default.createElement(FieldGroup, {
-            id: 'formControlsText',
-            type: 'text',
-            label: 'Phone number',
-            name: 'phone',
-            placeholder: this.state.phone,
-            onChange: this.handleInputChange
-          }),
-          _react2.default.createElement(
-            _reactBootstrap.Checkbox,
-            { name: 'primary', onChange: this.handleInputChange },
-            'Primary point of contact?'
-          ),
           _react2.default.createElement(
             _reactBootstrap.Button,
             { type: 'submit', bsStyle: 'primary' },
@@ -51217,19 +51205,19 @@ var FinancialsForm = function (_React$Component) {
 }(_react2.default.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
+  var currentTarget = state.targets.allTargets.filter(function (target) {
+    return +target.id === +state.targets.currentTargetId;
+  })[0];
   return {
-    contacts: state.contacts.allContacts,
-    currentTargetId: state.targets.currentTargetId
+    currentTargetId: state.targets.currentTargetId,
+    currentTargetFinancials: currentTarget.financials
   };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    addContact: function addContact(contact) {
-      return dispatch((0, _contactsReducer.addContact)(contact));
-    },
-    updateContact: function updateContact(contact) {
-      return dispatch((0, _contactsReducer.updateContact)(contact));
+    updateTarget: function updateTarget(newTarget) {
+      return dispatch((0, _targetsReducer.updateTarget)(newTarget));
     }
   };
 };

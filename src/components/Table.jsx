@@ -29,7 +29,11 @@ const Table = (props) => {
                             {Object.keys(row).map((columnName,index) =>
                                 <td key={index}>{row[columnName]}</td>)}
                             <td key={Object.keys(row).length}>
-                            <Button onClick={()=>props.editButtonHandler(row.id)}>Edit</Button>
+                            <i onClick={() => {
+                                if(row.id)props.editButtonHandler(row.id)
+                                else props.editButtonHandler(index)
+                             }} className='fa fa-edit fa-fw'></i>
+                            <i onClick={() => props.deleteButtonHandler(row.id)} className='fa fa-trash-o fa-fw'></i>
                             </td>
                         </tr>)
                     }

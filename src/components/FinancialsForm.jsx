@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateContact, addContact } from '../reducers/contactsReducer.js'
+import { updateTarget } from '../reducers/targetsReducer.js'
 import { Button, FormGroup, FormControl, ControlLabel, Checkbox , HelpBlock } from 'react-bootstrap'
 
 
@@ -17,34 +17,37 @@ function FieldGroup({ id, label, help, ...props }) {
 class FinancialsForm extends React.Component{
   constructor(props){
     super()
-    let oldContactInfo = {
-      name: '',
-      targetId: props.currentTargetId,
-      email: '',
-      phone: '',
-      primary: 'no',
+    let oldValues = {
+      metric: '',
+      value: ''
     }
-    if(props.contactId){
-      oldContactInfo = props.contacts.filter(contact=>contact.id===props.contactId)[0]
+    if(props.index !== false){
+      console.log('in conditional',props.index)
+      let metricArr = props.currentTargetFinancials[props.index]
+      oldValues.metric = metricArr[0]
+      oldValues.value = metricArr[1]
     }
-    this.state = Object.assign({}, oldContactInfo)
+    this.state = oldValues
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
   }
 
   handleSubmit(event){
     event.preventDefault()
-    if(this.props.contactId){
-      this.props.updateContact(this.state)
+    let newFinancials = this.props.currentTargetFinancials
+    let newInfoArr = [this.state.metric,this.state.value]
+    if(this.props.index !== false){
+      newFinancials[this.props.index]=newInfoArr
     }else{
-      this.props.addContact(this.state)
+      newFinancials.push(newInfoArr)
     }
+    this.props.updateTarget({id: this.props.currentTargetId, financials: newFinancials})
     this.props.submitCallback()
   }
 
   handleInputChange(event) {
     const target = event.target
-    const value = target.type === 'checkbox' ? target.checked : target.value
+    const value = target.value
     const name = target.name
     this.setState({
       [name]: value
@@ -53,33 +56,24 @@ class FinancialsForm extends React.Component{
 
   render(){
     return (
-      <div>
+      <div className="container col-lg-8 col-md-10 col-sm-12" style={{marginBottom: 20}}>
         <form onSubmit={this.handleSubmit}>
           <FieldGroup
             id="formControlsName"
             type="text"
-            label="Name"
-            name="name"
-            placeholder={this.state.name}
+            label="Metric"
+            name="metric"
+            placeholder={this.state.metric}
             onChange={this.handleInputChange}
           />
           <FieldGroup
-            id="formControlsText"
+            id="formControls"
             type="text"
-            label="Email address"
-            name="email"
-            placeholder={this.state.email}
+            label="Value"
+            name="value"
+            placeholder={this.state.value}
             onChange={this.handleInputChange}
           />
-          <FieldGroup
-            id="formControlsText"
-            type="text"
-            label="Phone number"
-            name="phone"
-            placeholder={this.state.phone}
-            onChange={this.handleInputChange}
-          />
-          <Checkbox name="primary" onChange={this.handleInputChange}>Primary point of contact?</Checkbox>
           <Button type='submit' bsStyle="primary">Submit</Button>
         </form>
       </div>
@@ -88,16 +82,16 @@ class FinancialsForm extends React.Component{
 }
 
 const mapStateToProps = (state) => {
+  let currentTarget = state.targets.allTargets.filter(target=>+target.id === +state.targets.currentTargetId)[0]
   return {
-    contacts: state.contacts.allContacts,
-    currentTargetId: state.targets.currentTargetId
+    currentTargetId: state.targets.currentTargetId,
+    currentTargetFinancials: currentTarget.financials
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addContact: (contact) => dispatch(addContact(contact)),
-    updateContact: (contact) => dispatch(updateContact(contact))
+    updateTarget: (newTarget) => dispatch(updateTarget(newTarget))
   }
 }
 
