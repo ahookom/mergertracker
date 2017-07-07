@@ -7,7 +7,6 @@ const Table = (props) => {
     const columns = props.columns
     const rows = props.rows
     const tableName = props.tableName
-   console.log(rows)
  return (
         <div className="row">
 
