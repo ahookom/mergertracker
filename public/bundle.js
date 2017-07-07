@@ -49346,12 +49346,12 @@ var setCurrTargetId = function setCurrTargetId(props) {
     { history: _reactRouter.browserHistory },
     _react2.default.createElement(
       _reactRouter.Route,
-      { path: '/mergertracker', component: _App2.default },
+      { path: '/', component: _App2.default },
       _react2.default.createElement(_reactRouter.Route, { path: './home', component: _HomeView2.default }),
       _react2.default.createElement(_reactRouter.Route, { path: './target/:id', component: _TargetView2.default, onEnter: setCurrTargetId }),
       _react2.default.createElement(_reactRouter.IndexRedirect, { to: './home' })
     ),
-    _react2.default.createElement(_reactRouter.Route, { path: 'mergertracker/*', component: _NotFound2.default })
+    _react2.default.createElement(_reactRouter.Route, { path: '/*', component: _NotFound2.default })
   )
 ), document.getElementById('main'));
 

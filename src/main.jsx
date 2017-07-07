@@ -21,12 +21,12 @@ const setCurrTargetId = (props) => {
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/mergertracker" component={App} >
+      <Route path="/" component={App} >
         <Route path='./home' component={HomeView} />
         <Route path='./target/:id' component={TargetView} onEnter={setCurrTargetId} />
         <IndexRedirect to="./home" />
       </Route>
-      <Route path='mergertracker/*' component={NotFound} />
+      <Route path='/*' component={NotFound} />
     </Router>
    </Provider>,
  document.getElementById('main')
