@@ -4,17 +4,15 @@ import { connect } from 'react-redux'
 import StatusIndicator from './StatusIndicator.jsx'
 import FinancialContainer from './FinancialContainer.jsx'
 import ContactsContainer from './ContactsContainer.jsx'
-import { browserHistory } from 'react-router'
+import EditableTargetName from './EditableTargetName.jsx'
 
 const TargetView = props => {
-  let currTarget = props.targets.filter(target =>+target.id===+props.currentTargetId)[0]
+  let currentTarget = props.targets.filter(target =>+target.id===+props.currentTargetId)[0]
   return (
     <div id="page-wrapper">
       <div className="row">
-          <div className="col-lg-12">
-              <h1 className="page-header">{currTarget.name}</h1><i className='icon-edit'></i>
-          </div>
-          <StatusIndicator status={currTarget.status} updated={currTarget.updated} />
+        <EditableTargetName currentTargetName ={currentTarget.name} />
+        <StatusIndicator status={currentTarget.status} />
       </div>
       <FinancialContainer />
       <ContactsContainer />
@@ -29,10 +27,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = () => {
-  return {
-
-  }
-}
+const mapDispatchToProps = null
 
 export default connect(mapStateToProps, mapDispatchToProps)(TargetView)

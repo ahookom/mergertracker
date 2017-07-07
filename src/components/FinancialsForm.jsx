@@ -14,7 +14,7 @@ function FieldGroup({ id, label, help, ...props }) {
   )
 }
 
-class ContactForm extends React.Component{
+class FinancialsForm extends React.Component{
   constructor(props){
     super()
     let oldContactInfo = {
@@ -101,4 +101,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm)
+export default connect(mapStateToProps, mapDispatchToProps)(FinancialsForm)

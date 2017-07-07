@@ -12,10 +12,10 @@ export const createNewTarget = id => {
   }
 }
 
-export const updateTarget = newTarget => {
+export const updateTarget = updatedTargetValues => {
   return {
-    type: UDATE_TARGET,
-    updatedTarget: updatedTarget
+    type: UPDATE_TARGET,
+    updatedTarget: updatedTargetValues
   }
 }
 
@@ -40,7 +40,8 @@ const initialState = {
         name: 'Amazon',
         status: 'researching',
         comments: 'nice growth rate, logistics resources',
-        updated: 'June 15, 2017'
+        updated: 'June 15, 2017',
+        financials: [['Year-to-date Revenue','$10,000,000'],['2016 Revenue','$3 billion'],['Key Assets', 'AWS, logistics'],['Projected Growth', '15%']]
       }
     ],
     currentTargetId: 1,
@@ -53,16 +54,17 @@ const targetsReducer = (state = initialState, action) => {
   case CREATE_NEW_TARGET:
     let newTarget = {
       id: newState.nextTargetId++,
-      name: '',
-      status: '',
-      comments: ''
+      name: 'Add Title Here',
+      status: 'researching',
+      comments: '',
+      financials: [['2016 Growth', 'unknown']]
     }
     newState.allTargets = [...newState.allTargets, newTarget]
     break
   case UPDATE_TARGET:
     let updatedTarget = action.updatedTarget
     let newAllTargets = newState.allTargets.map(target => {
-      if (+target.id === +action.id){
+      if (+target.id === +action.updatedTarget.id){
         return Object.assign(target, updatedTarget)
       } else {
         return target
