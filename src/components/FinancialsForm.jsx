@@ -22,7 +22,6 @@ class FinancialsForm extends React.Component{
       value: ''
     }
     if(props.index !== false){
-      console.log('in conditional',props.index)
       let metricArr = props.currentTargetFinancials[props.index]
       oldValues.metric = metricArr[0]
       oldValues.value = metricArr[1]
@@ -34,7 +33,7 @@ class FinancialsForm extends React.Component{
 
   handleSubmit(event){
     event.preventDefault()
-    let newFinancials = this.props.currentTargetFinancials
+    let newFinancials = this.props.currentTargetFinancials.slice()
     let newInfoArr = [this.state.metric,this.state.value]
     if(this.props.index !== false){
       newFinancials[this.props.index]=newInfoArr

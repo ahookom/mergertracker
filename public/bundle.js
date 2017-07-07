@@ -51190,7 +51190,6 @@ var FinancialsForm = function (_React$Component) {
       value: ''
     };
     if (props.index !== false) {
-      console.log('in conditional', props.index);
       var metricArr = props.currentTargetFinancials[props.index];
       oldValues.metric = metricArr[0];
       oldValues.value = metricArr[1];
@@ -51205,7 +51204,7 @@ var FinancialsForm = function (_React$Component) {
     key: 'handleSubmit',
     value: function handleSubmit(event) {
       event.preventDefault();
-      var newFinancials = this.props.currentTargetFinancials;
+      var newFinancials = this.props.currentTargetFinancials.slice();
       var newInfoArr = [this.state.metric, this.state.value];
       if (this.props.index !== false) {
         newFinancials[this.props.index] = newInfoArr;
