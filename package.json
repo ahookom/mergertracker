@@ -12,6 +12,7 @@
   "dependencies": {
     "clear": "0.0.1",
     "fs": "0.0.1-security",
+    "http-server": "^0.10.0",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.6.1",

@@ -12,7 +12,7 @@ const TargetView = props => {
     <div id="page-wrapper">
       <div className="row">
           <div className="col-lg-12">
-              <h1 className="page-header">{currTarget.name}</h1>
+              <h1 className="page-header">{currTarget.name}</h1><i className='icon-edit'></i>
           </div>
           <StatusIndicator status={currTarget.status} updated={currTarget.updated} />
       </div>
